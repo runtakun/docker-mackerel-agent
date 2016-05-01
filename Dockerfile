@@ -1,13 +1,14 @@
-FROM ubuntu:14.04
+FROM alpine:3.3
 
-# setup mackerel-agent
-RUN apt-get update \
-  && apt-get -y install curl sudo ruby docker.io \
-  && curl -fsSL https://mackerel.io/assets/files/scripts/setup-apt.sh | sh \
-  && apt-get update \
-  && apt-get -y install mackerel-agent mackerel-agent-plugins mackerel-check-plugins \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN mkdir -p /opt
+WORKDIR /opt
+
+RUN apk --no-cache --update add \
+                                           curl && \
+        curl -LO https://mackerel.io/file/agent/tgz/mackerel-agent-latest.tar.gz && \
+        tar xzf mackerel-agent-latest.tar.gz && \
+        apk del curl && \
+        rm -rf /tmp/* /var/tmp/* /var/cache/apk/* /opt/mackerel-agent-latest.tar.gz
 
 ADD startup.sh /startup.sh
 RUN chmod 755 /startup.sh
