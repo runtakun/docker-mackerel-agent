@@ -4,7 +4,7 @@ RUN mkdir -p /opt
 WORKDIR /opt
 
 RUN apk --no-cache --update add \
-                                           curl && \
+                            curl && \
         curl -LO https://mackerel.io/file/agent/tgz/mackerel-agent-latest.tar.gz && \
         tar xzf mackerel-agent-latest.tar.gz && \
         apk del curl && \
